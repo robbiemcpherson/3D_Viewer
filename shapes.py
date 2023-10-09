@@ -1,6 +1,6 @@
 import math as m
 
-def SPHERE(n, radius):
+def SPHERE(n=50, radius=200):
     points = []
     
     # Calculate the angle increment for latitude and longitude
@@ -22,7 +22,7 @@ def SPHERE(n, radius):
 
     return points
 
-def RECTANGLE(length, width, height, spacing = 10, edges = False):
+def RECTANGLE(length=200, width=200, height=200, spacing = 15, edges = False):
     if edges:
         global RECT_WITH_EDGES
         RECT_WITH_EDGES = True
@@ -75,7 +75,7 @@ def BALL_TRAJECTORY(speed, h1, angle, dt, g= 9.8):
     return points
 
 
-def function(z="m.sqrt(-x**2-y**2+16)", spacing=0.2, bounds=10, plusMinus=False, scale=100):
+def FUNCTION(z="m.sin(x)+m.cos(y)", spacing=0.2, bounds=10, plusMinus=False, scale=20):
     points = []
 
     x=-bounds//2

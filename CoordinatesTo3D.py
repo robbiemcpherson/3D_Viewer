@@ -1,80 +1,39 @@
 import pygame as pg
 import math as m
 import shapes
+from globals import *
 pg.init()
 
 """
 note: for axis --> x is out of screen, y is to the right, z is down (because of pygame)
 """
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-"""PARAMETERS"""#-------------------------------------------------------------
-#Frames per second
-FPS = 60
-
-#Allow mouse input or not
-ALLOW_MOUSE_INPUT = True
-
-#connect all the points to eachother?
-CONNECT_ALL = False
-
-#for if its a rectangular prims with edges
-RECT_WITH_EDGES = False
-
-#angular velocity (radians per frame) --> FOR WHEN ALLOW_MOUSE_INPUT IS FALSE
-ANG_VEL_X = (2 / 10) * (2 * m.pi / FPS) # (num_rotations / time) * (2pi/FPS)
-ANG_VEL_Y = (2 / 10) * (2 * m.pi / FPS)
-ANG_VEL_Z = (2 / 10) * (2 * m.pi / FPS)
-
-#window dimensions
-WIDTH, HEIGHT = 800, 800
-
-#starting corner coordinates --> cube centered at (0, 0, 0)
-ORIGIN = (0, WIDTH//2, HEIGHT//2)
-
-#offset from origin
-oX, oY, oZ = 0, 0, 0
-
-#initialize global variable for distant from origin to furthest point
-MAX_DIST_FROM_ORIGIN = 0
-
-WIN = pg.display.set_mode((WIDTH, HEIGHT))
-pg.display.set_caption("3D Viewer")
-
 #------------------------------------------------------------
 def main():
-    """THIS IS WHERE YOU CAN ASSIGN THE SET OF COORDINATES THAT WILL BE DISPLAYED"""
+    
     global COORDINATES
     global MAX_DIST_FROM_ORIGIN
-
-    COORDINATES = shapes.function() 
-
-    """
-    set COORDINATES to any of the following:
-
-    SPHERE(num points, radius) --> 50, 200
-    RECTANGLE(length, width, height, spacing, add edges?) --> 200, 200, 200, 20, False
-    BALL_TRAJECTORY(speed, height, angle, time intervals) --> 10, 1, 45, 0.01
-
-    Any set of coordinates will work if they follow this format --> [[x, y, z], [x, y, z], ...]
-    Best to choose coordinates centered around point
-    """
-
+    global WIN
+    
+    """----DEFINE THE SHAPE OF 3D OBJECTS----"""
+    COORDINATES = shapes.FUNCTION() 
+    
     #allows for object to be translated in x, y, z and still rotate about the origin
     adjust_coordinates_to_origin(oX, oY, oZ)
 
     MAX_DIST_FROM_ORIGIN = get_max_from_origin()
-
-    clock = pg.time.Clock()
 
     mousePosNow = pg.mouse.get_pos()
     mousePosLast = pg.mouse.get_pos()
 
     holding = False # track whether or not the mouse button is being held down
 
-    #main loop
+    #INITIALIZE PYGAME WINDOW AND START CLOCK
+    WIN = pg.display.set_mode((WIDTH, HEIGHT))
+    pg.display.set_caption("3D Viewer")
+    clock = pg.time.Clock()
+
+    #MAIN LOOP
     while(True):
         clock.tick(FPS)
 
@@ -87,7 +46,7 @@ def main():
                 mousePosNow=pg.mouse.get_pos()
             if event.type == pg.MOUSEBUTTONUP:
                 holding = False
-            if event.type == pg.MOUSEWHEEL: #handles zoom
+            if event.type == pg.MOUSEWHEEL:
                 zoom(event.y)
         
         if ALLOW_MOUSE_INPUT:
